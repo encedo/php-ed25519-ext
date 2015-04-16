@@ -10,8 +10,7 @@ PHP_FUNCTION(ed25519_publickey)
 	unsigned char *secret;
 	int secret_len;
 
-  ed25519_public_key pk;
-  //ed25519_secret_key sk
+        ed25519_public_key pk;
   
   
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &secret, &secret_len) == FAILURE) {
@@ -19,12 +18,10 @@ PHP_FUNCTION(ed25519_publickey)
 	}
 
 	if (secret_len != 32) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Private key must be 32 bytes");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Secret must be 32 bytes");
 		RETURN_FALSE;
 	}
 
-  //memmove(sk, secret, 32);
-	//ed25519_publickey(sk, pk);
 	ed25519_publickey(secret, pk);
 
 	RETURN_STRINGL(pk, 32, 1);
@@ -40,9 +37,6 @@ PHP_FUNCTION(ed25519_sign_open)
 
 	unsigned char *rs;
 	int rs_len;
-	
-	ed25519_public_key PK;
-	ed25519_signature RS
 	
 	int result;
 
@@ -61,14 +55,12 @@ PHP_FUNCTION(ed25519_sign_open)
 		RETURN_FALSE;
 	}
 
-  //memmove(sk, secret, 32);
-  //memmove(sk, secret, 32);
-
-  result = ed25519_sign_open(m, m_len, pk, rs);
-  if (result)
-    RETURN_TRUE;
-  else
-    RETURN_FALSE;	
+  	result = ed25519_sign_open(m, m_len, pk, rs);
+ 	if (result == 0) {
+    		RETURN_TRUE;
+  	} else {
+    		RETURN_FALSE;	
+  	}
 }
 
 PHP_FUNCTION(ed25519_sign)
@@ -82,35 +74,50 @@ PHP_FUNCTION(ed25519_sign)
 	unsigned char *sk;
 	int sk_len;
 	
-	ed25519_public_key PK;
-	ed25519_signature RS
+	ed25519_signature RS;
 	
-	int result;
-
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sss", &m, &m_len, &sk, &sk_len, &pk, &pk_len) == FAILURE) {
 		RETURN_FALSE;
 	}
 
-	if (pk_len != 32) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Public key must be 32 bytes");
-		RETURN_FALSE;
-	}
-
 	if (sk_len != 32) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Private key must be 32 bytes");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Secret must be 32 bytes");
 		RETURN_FALSE;
 	}
 
-  //memmove(sk, secret, 32);
-  //memmove(sk, secret, 32);
 
-  ed25519_sign(m, m_len, sk, pk, RS);
+        if (pk_len != 32) {
+                php_error_docref(NULL TSRMLS_CC, E_WARNING, "Public key must be 32 bytes");
+                RETURN_FALSE;
+        }
+
+  	ed25519_sign(m, m_len, sk, pk, RS);
   
-  RETURN_STRINGL(RS, 54, 1);
+  	RETURN_STRINGL(RS, 64, 1);
 }
 
 
+PHP_FUNCTION(curved25519_scalarmult_basepoint)
+{
+        unsigned char *secret;
+        int secret_len;
+
+        curved25519_key pk;
+
+        if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &secret, &secret_len) == FAILURE) {
+                RETURN_FALSE;
+        }
+
+        if (secret_len != 32) {
+                php_error_docref(NULL TSRMLS_CC, E_WARNING, "Secret must be 32 bytes");
+                RETURN_FALSE;
+        }
+
+        curved25519_scalarmult_basepoint (pk, secret);
+
+        RETURN_STRINGL(pk, 32, 1);
+}
 
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_ed25519_publickey, 0, 0, 1)
@@ -129,11 +136,16 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_ed25519_sign, 0, 0, 3)
 	ZEND_ARG_INFO(0, public)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_curved25519_scalarmult_basepoint, 0, 0, 1)
+        ZEND_ARG_INFO(0, secret)
+ZEND_END_ARG_INFO()
+
 
 const zend_function_entry ed25519_functions[] = {
 	PHP_FE(ed25519_publickey, arginfo_ed25519_publickey)
 	PHP_FE(ed25519_sign_open, arginfo_ed25519_sign_open)
 	PHP_FE(ed25519_sign, arginfo_ed25519_sign)
+	PHP_FE(curved25519_scalarmult_basepoint, arginfo_curved25519_scalarmult_basepoint)
 	PHP_FE_END
 };
 
