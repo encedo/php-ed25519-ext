@@ -1,0 +1,6 @@
+php5-ed25519 (0.1.0-1) unstable; urgency=low
+
+  * Initial Release
+
+ -- Christian von Roques <roques@mti.ag>  Fri, 18 Mar 2016 17:39:31 -0400
+

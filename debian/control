@@ -1,0 +1,14 @@
+Source: php5-ed25519
+Section: php
+Priority: optional
+Maintainer: Christian von Roques <roques@stupid.mti.ag>
+Build-Depends: debhelper (>= 9), php5-dev (>= 5.4.1), dh-php5
+Standards-Version: 3.9.6
+VCS-Git: git://github.com/encedo/php-ed25519-ext.git
+
+
+Package: php5-ed25519
+Architecture: any
+Depends: ${shlibs:Depends}, ${php:Depends}, ${misc:Depends}
+Description: ed25519 module for PHP 5
+ This extension allows creating and verification ed25519 signatures.
