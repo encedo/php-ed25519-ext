@@ -1,0 +1,4 @@
+extern zend_module_entry ed25519_module_entry;
+
+#define ed25519_module_ptr &ed25519_module_entry
+#define phpext_ed25519_ptr ed25519_module_ptr
