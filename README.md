@@ -32,7 +32,12 @@ fakeroot debian/rules binary
 Generate 32 secret random bytes from a cryptographically safe source e.g.
 
 ```
+// PHP 7
+$mySecret = random_bytes(32);
+
+// <= PHP 5.6
 $mySecret = openssl_random_pseudo_bytes(32);
+
 ```
 
 Then generate the corresponding 32-byte public key by calling
@@ -50,7 +55,7 @@ $signature = ed25519_sign($message, $mySecret, $myPublic);
 To verify the ```$signature``` for a given ```$message``` against ```$myPublic``` call
 
 ```
-$status = ed25519_sign_open($message,  $myPublic, $signature) );
+$status = ed25519_sign_open($message,  $myPublic, $signature);
 ```
 
 If ```$status === TRUE``` the ```$signature``` is just fine :)
@@ -63,7 +68,7 @@ If ```$status === TRUE``` the ```$signature``` is just fine :)
 $mySecret = openssl_random_pseudo_bytes(32);
 $myPublic = ed25519_publickey($mySecret);
 
-$message = "Hellow World";
+$message = 'Hello, World!';
 
 $signature = ed25519_sign($message, $mySecret, $myPublic);
 var_dump( ed25519_sign_open($message,  $myPublic, $signature) );
