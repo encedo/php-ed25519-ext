@@ -1,0 +1,20 @@
+This package was debianized by Christian von Roques <roques@mti.ag>
+on Fri, 18 Mar 2016 17:39:31 -0400.
+
+It was cloned from git://github.com/encedo/php-ed25519-ext.git
+
+Upstream Author(s):
+
+    Krzysztof Rutecki <encedo@users.noreply.github.com>
+
+Copyright:
+
+    Copyright (C) 2015 Krzysztof Rutecki
+
+License:
+
+    PHP
+
+The Debian packaging was made by, Christian von Roques <roques@mti.ag> and
+placed in the Public Domain.
+

@@ -1,0 +1,6 @@
+*.debhelper
+files
+php5-ed25519.debhelper.log
+php5-ed25519.substvars
+php5-ed25519/
+

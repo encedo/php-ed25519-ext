@@ -16,6 +16,16 @@ sudo make install
 ```
 Finally add `extension=ed25519.so` to your /etc/php.ini
 
+### Building a Debian package
+
+You can build it as a Debian package using
+
+```
+git clone git://github.com/encedo/php-ed25519-ext.git
+cd php-ed25519-ext
+sudo apt-get install php5-dev dh-php5
+fakeroot debian/rules binary
+```
 
 ### Usage:
 
